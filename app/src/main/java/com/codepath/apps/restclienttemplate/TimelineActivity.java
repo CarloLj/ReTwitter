@@ -42,7 +42,7 @@ public class TimelineActivity extends AppCompatActivity {
             case R.id.compose:
                 Intent intent = new Intent(this, ComposeActivity.class);
                 startActivity(intent);
-                return true;C
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
