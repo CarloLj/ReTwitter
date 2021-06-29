@@ -70,7 +70,7 @@ public class TimelineActivity extends AppCompatActivity {
         });
     }
 
-    public void finish(View view) {
+    public void onLogoutButton(View view) {
         client.clearAccessToken(); // forget who's logged in
         finish(); // navigate backwards to Login screen
     }
