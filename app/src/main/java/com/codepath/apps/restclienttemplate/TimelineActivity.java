@@ -1,12 +1,16 @@
 package com.codepath.apps.restclienttemplate;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
@@ -20,6 +24,27 @@ import java.util.List;
 import okhttp3.Headers;
 
 public class TimelineActivity extends AppCompatActivity {
+
+    //overriding the menu bar at the top ctrl + o
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //Inflate the menu; this adds items to the action bar if it is present
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    //Managing on licks inside the menu item
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle presses on the action bar items
+        switch (item.getItemId()) {
+            case R.id.compose:
+                Toast.makeText(this, "Compose", Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     public static final String TAG  = "TimelineActivity";
 
