@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,6 +28,8 @@ import okhttp3.Headers;
 
 public class TimelineActivity extends AppCompatActivity {
 
+    private SwipeRefreshLayout swipeContainer;
+
     public static final String TAG  = "TimelineActivity";
     private final int REQUEST_CODE = 20;
 
@@ -43,7 +46,7 @@ public class TimelineActivity extends AppCompatActivity {
         return true;
     }
 
-    //Managing on licks inside the menu item
+    //Managing on clicks inside the menu item
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle presses on the action bar items
@@ -59,7 +62,7 @@ public class TimelineActivity extends AppCompatActivity {
 
     //Request code is the same as the one we defined at the function above, we want to receive the same REQUEST-CODE
     //tHE RESULT CODE IS something defined by android we want to see if the child activity finished succesfully
-    //Dta is what we're receiving
+    //Data is what we're receiving
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
         if(requestCode == REQUEST_CODE && resultCode == RESULT_OK){
@@ -85,6 +88,24 @@ public class TimelineActivity extends AppCompatActivity {
 
         //Find the recycler view
         rvTweets = findViewById(R.id.rvTweets);
+
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        // Setup refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Your code to refresh the list here.
+                // Make sure you call swipeContainer.setRefreshing(false)
+                // once the network request has completed successfully.
+                fetchTimelineAsync(0);
+            }
+        });
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
         //Init the list of tweets and adapter
         tweets = new ArrayList<>();
         adapter = new TweetsAdapter(this,tweets);
@@ -121,4 +142,34 @@ public class TimelineActivity extends AppCompatActivity {
         client.clearAccessToken(); // forget who's logged in
         finish(); // navigate backwards to Login screen
     }
+
+    public void fetchTimelineAsync(int page) {
+        // Send the network request to fetch the updated data
+        // `client` here is an instance of Android Async HTTP
+        // getHomeTimeline is an example endpoint.
+        client.getHomeTimeline(new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Headers headers, JSON json) {
+                // Remember to CLEAR OUT old items before appending in the new ones
+                adapter.clear();
+                // ...the data has come back, add new items to your adapter...
+                JSONArray jsonArray = json.jsonArray;
+                try {
+                    adapter.addAll(Tweet.fromJsonArray(jsonArray));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                // Now we call setRefreshing(false) to signal refresh has finished
+                swipeContainer.setRefreshing(false);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                Toast.makeText(TimelineActivity.this, "Could not refresh" , Toast.LENGTH_SHORT).show();
+                Log.d("DEBUG", "Fetch timeline error: ", throwable);
+                swipeContainer.setRefreshing(false);
+            }
+        });
+    }
+
 }

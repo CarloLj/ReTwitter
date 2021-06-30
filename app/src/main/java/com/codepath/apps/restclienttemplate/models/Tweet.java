@@ -17,9 +17,16 @@ import java.util.Locale;
 //Need to declare this line in order to declare the object parcelable
 @Parcel
 public class Tweet {
+
+    private static final int SECOND_MILLIS = 1000;
+    private static final int MINUTE_MILLIS = 60 * SECOND_MILLIS;
+    private static final int HOUR_MILLIS = 60 * MINUTE_MILLIS;
+    private static final int DAY_MILLIS = 24 * HOUR_MILLIS;
+
     public String body;
     public String createdAt;
     public User user;
+    public String mediaUrl;
 
     //Need empty constructor for parcelable object
     Tweet(){ }
@@ -33,8 +40,17 @@ public class Tweet {
         }
         tweet.createdAt = tweet.getRelativeTimeAgo(jsonObject.getString("created_at"));
         tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
-        //jsonTweet.getJSONObject("entities"); //For images, next update
+        tweet.mediaUrl = getMediaUrl(jsonObject); //For images, next update
         return tweet;
+    }
+
+    private static String getMediaUrl(JSONObject jsonObject) throws JSONException {
+        String mediaUrl = null;
+        JSONObject entities = jsonObject.getJSONObject("entities");
+        if(entities.has("media")){
+            mediaUrl = entities.getJSONArray("media").getJSONObject(0).getString("media_url_https");
+        }
+        return mediaUrl;
     }
 
     public static List<Tweet> fromJsonArray(JSONArray jsonArray) throws JSONException {
@@ -45,16 +61,10 @@ public class Tweet {
         return tweets;
     }
 
-    private static final int SECOND_MILLIS = 1000;
-    private static final int MINUTE_MILLIS = 60 * SECOND_MILLIS;
-    private static final int HOUR_MILLIS = 60 * MINUTE_MILLIS;
-    private static final int DAY_MILLIS = 24 * HOUR_MILLIS;
-
     public String getRelativeTimeAgo(String rawJsonDate) {
         String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
         SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
         sf.setLenient(true);
-
         try {
             long time = sf.parse(rawJsonDate).getTime();
             long now = System.currentTimeMillis();
@@ -79,7 +89,6 @@ public class Tweet {
             Log.i("Tweet", "getRelativeTimeAgo failed");
             e.printStackTrace();
         }
-
         return "";
     }
 }
