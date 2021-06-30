@@ -68,7 +68,7 @@ public class ComposeActivity extends AppCompatActivity {
                             setResult(RESULT_OK, intent);
                             finish();
                         } catch (JSONException e) {
-                            Toast.makeText(ComposeActivity.this, "something failed cmon", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ComposeActivity.this, "something failed", Toast.LENGTH_SHORT).show();
                             e.printStackTrace();
                         }
                     }
