@@ -148,6 +148,7 @@ public class TimelineActivity extends AppCompatActivity {
         });
     }
 
+    //Log out from existing client on click of the item inside the toolbar
     public void onLogoutButton() {
         client.clearAccessToken(); // forget who's logged in
         finish(); // navigate backwards to Login screen
@@ -175,13 +176,14 @@ public class TimelineActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-                Toast.makeText(TimelineActivity.this, "Could not refresh" , Toast.LENGTH_SHORT).show();
+                Toast.makeText(TimelineActivity.this, "Could not refresh, check your connection" , Toast.LENGTH_SHORT).show();
                 Log.d("DEBUG", "Fetch timeline error: ", throwable);
                 swipeContainer.setRefreshing(false);
             }
         });
     }
 
+    //start Compose Activity and wait for result
     public void createTweet(View view) {
         Intent intent = new Intent(this, ComposeActivity.class);
         startActivityForResult(intent, REQUEST_CODE);

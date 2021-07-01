@@ -85,33 +85,62 @@
         android:layout_marginTop="10dp"
         app:justifyContent="space_around"> <!-- or "space_between", "space_evenly" -->
 
-        <ImageButton
-            android:id="@+id/ibReply"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_comment_anim"
-            android:backgroundTint="@color/medium_gray"
-            tools:srcCompat="@tools:sample/avatars"
-            android:layout_gravity="left"
-            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal">
+            <ImageButton
+                android:id="@+id/ibReply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_comment_anim"
+                android:backgroundTint="@color/medium_gray"
+                tools:srcCompat="@tools:sample/avatars"/>
+            <TextView
+                android:id="@+id/tvReply"
+                android:paddingLeft="3dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/ibRetweet"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_retweet_anim"
-            android:backgroundTint="@color/medium_gray"
-            tools:srcCompat="@tools:sample/avatars"
-            android:layout_gravity="center"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal">
+            <ImageButton
+                android:id="@+id/ibRetweet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_retweet_anim"
+                android:backgroundTint="@color/medium_gray"
+                tools:srcCompat="@tools:sample/avatars" />
+            <TextView
+                android:id="@+id/tvRetweet"
+                android:paddingLeft="3dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/ibLike"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_like_anim"
-            android:backgroundTint="@color/medium_gray"
-            tools:srcCompat="@tools:sample/avatars"
-            android:layout_gravity="right"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal">
+            <ImageButton
+                android:id="@+id/ibLike"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_like_anim"
+                android:backgroundTint="@color/medium_gray"
+                tools:srcCompat="@tools:sample/avatars"/>
+            <TextView
+                android:id="@+id/tvLike"
+                android:paddingLeft="3dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
     </com.google.android.flexbox.FlexboxLayout>
 
     <View

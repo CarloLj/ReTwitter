@@ -27,6 +27,8 @@ public class Tweet {
     public String createdAt;
     public User user;
     public String mediaUrl;
+    public int likeCount;
+    public int retweetCount;
 
     //Need empty constructor for parcelable object
     Tweet(){ }
@@ -41,6 +43,8 @@ public class Tweet {
         tweet.createdAt = tweet.getRelativeTimeAgo(jsonObject.getString("created_at"));
         tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
         tweet.mediaUrl = getMediaUrl(jsonObject); //For images, next update
+        tweet.likeCount = jsonObject.getInt("favorite_count");
+        tweet.retweetCount = jsonObject.getInt("retweet_count");
         return tweet;
     }
 

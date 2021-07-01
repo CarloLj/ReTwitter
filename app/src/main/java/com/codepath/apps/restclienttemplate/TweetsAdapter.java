@@ -4,8 +4,11 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -67,13 +70,15 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
     }
 
     //Define a viewholder
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         ImageView ivProfileImage;
         TextView tvBody;
         TextView tvScreenName;
         TextView tvUserName;
         TextView tvCreatedAt;
         ImageView ivTweetImage;
+        ImageButton ibReply, ibRetweet, ibLike;
+        TextView tvRetweet, tvLike;
 
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
@@ -83,6 +88,17 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvCreatedAt = itemView.findViewById(R.id.tvCreatedAt);
             ivTweetImage = itemView.findViewById(R.id.ivTweetImage);
             tvUserName = itemView.findViewById(R.id.tvUserName);
+
+            //Tweet buttons (Like, Reply, Retweet)
+            ibReply = itemView.findViewById(R.id.ibReply);
+            ibRetweet = itemView.findViewById(R.id.ibRetweet);
+            ibLike = itemView.findViewById(R.id.ibLike);
+
+            //Tweet stats (Like, Reply, Retweet)
+            tvRetweet = itemView.findViewById(R.id.tvRetweet);
+            tvLike = itemView.findViewById(R.id.tvLike);
+
+            itemView.setOnClickListener(this);
         }
 
         public void bind(Tweet tweet) {
@@ -90,6 +106,10 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvScreenName.setText("@" + tweet.user.screenName);
             tvCreatedAt.setText("• " + tweet.createdAt);
             tvUserName.setText(tweet.user.name);
+
+            tvLike.setText(String.valueOf(tweet.likeCount));
+            tvRetweet.setText(String.valueOf(tweet.retweetCount));
+
             Glide.with(context).load(tweet.user.profileImageUrl).transform(new CircleCrop()).into(ivProfileImage);
             if(tweet.mediaUrl != null){
                 ivTweetImage.setVisibility(View.VISIBLE);
@@ -97,6 +117,11 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 ivTweetImage.setVisibility(View.GONE);
             }
             Glide.with(context).load(tweet.mediaUrl).transforms(new CenterCrop(), new RoundedCorners(30)).into(ivTweetImage);
+        }
+
+        @Override
+        public void onClick(View view) {
+            Toast.makeText(context, "Clicked on the tweet!", Toast.LENGTH_SHORT).show();
         }
     }
 }
