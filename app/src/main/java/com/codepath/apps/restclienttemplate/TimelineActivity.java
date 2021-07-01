@@ -125,7 +125,7 @@ public class TimelineActivity extends AppCompatActivity {
 
         //Init the list of tweets and adapter
         tweets = new ArrayList<>();
-        adapter = new TweetsAdapter(this,tweets);
+        adapter = new TweetsAdapter(this,tweets, client);
         //RecyclerView setup: layout manager and adapter
         rvTweets.setLayoutManager(new LinearLayoutManager(this));
         rvTweets.setAdapter(adapter);

@@ -1,6 +1,7 @@
 package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,15 +19,19 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.codepath.apps.restclienttemplate.models.Tweet;
+import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+import okhttp3.Headers;
+
 public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder>{
 
     Context context;
     List<Tweet> tweets;
+    TwitterClient client;
 
     // Clean all elements of the recycler
     public void clear() {
@@ -40,9 +45,10 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         notifyDataSetChanged();
     }
 
-    public TweetsAdapter(Context context, List<Tweet> tweets) {
+    public TweetsAdapter(Context context, List<Tweet> tweets, TwitterClient client) {
         this.context = context;
         this.tweets = tweets;
+        this.client = client;
     }
 
     //Pass in the context and list of tweets1||1||||1|
@@ -101,7 +107,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             itemView.setOnClickListener(this);
         }
 
-        public void bind(Tweet tweet) {
+        public void bind(final Tweet tweet) {
             tvBody.setText(tweet.body);
             tvScreenName.setText("@" + tweet.user.screenName);
             tvCreatedAt.setText("• " + tweet.createdAt);
@@ -117,6 +123,71 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 ivTweetImage.setVisibility(View.GONE);
             }
             Glide.with(context).load(tweet.mediaUrl).transforms(new CenterCrop(), new RoundedCorners(30)).into(ivTweetImage);
+
+            if (tweet.liked) {
+                ibLike.setBackgroundResource(R.drawable.ic_vector_heart);
+            }else{
+                ibLike.setBackgroundResource(R.drawable.ic_like_anim);
+            }
+
+            ibLike.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(!tweet.liked) {
+                        client.like(tweet.id, new JsonHttpResponseHandler() {
+                            @Override
+                            public void onSuccess(int statusCode, Headers headers, JSON json) {
+                                ibLike.setBackgroundResource(R.drawable.ic_vector_heart);
+                                int nLikes = Integer.valueOf(tvLike.getText().toString());
+                                tvLike.setText(String.valueOf(nLikes+1));
+                                tweet.liked = true;
+                                tweet.likeCount = tweet.likeCount+1;
+                                Toast.makeText(context, "Tweet Liked!", Toast.LENGTH_SHORT).show();
+                                Log.i("OnClick Like", "successful");
+                            }
+                            @Override
+                            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                                Toast.makeText(context, "Error liking the tweet, try again later!", Toast.LENGTH_SHORT).show();
+                                Log.e("OnClick Like", "error");
+                            }
+                        });
+                    }
+                    else {
+                        client.disLike(tweet.id, new JsonHttpResponseHandler() {
+                            @Override
+                            public void onSuccess(int statusCode, Headers headers, JSON json) {
+                                ibLike.setBackgroundResource(R.drawable.ic_vector_heart_stroke);
+                                int favorites = Integer.valueOf(tvLike.getText().toString()) ;
+                                tvLike.setText(String.valueOf(favorites-1));
+                                tweet.likeCount = tweet.likeCount-1;
+                                tweet.liked = false;
+                                Toast.makeText(context, "Tweet Disliked!", Toast.LENGTH_SHORT).show();
+                                Log.i("OnClick Like", "success");
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                                Toast.makeText(context, "Tweet Disliked!", Toast.LENGTH_SHORT).show();
+                                Log.e("OnClick Like", "error");
+                            }
+                        });
+                    }
+                }
+            });
+
+            ibRetweet.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(context, "Retweet Clicked", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            ibReply.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(context, "Reply Clicked", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
 
         @Override
