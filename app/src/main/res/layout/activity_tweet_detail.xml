@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/ivProfileimage"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/tvUserName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/ivProfileimage"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            tools:text="/@carlosano2008" />
+
+        <TextView
+            android:id="@+id/tvScreenName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@+id/ivProfileimage"
+            android:layout_below="@id/tvUserName"
+            tools:text="carlosano2008" />
+
+        <TextView
+            android:id="@+id/tvBody"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvScreenName"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_toEndOf="@+id/ivProfileimage"
+            android:autoLink="all"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            tools:text="THIS IS MY TWEET!" />
+
+        <ImageView
+            android:id="@+id/ivTweetImage"
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            android:layout_below="@+id/tvBody"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:scaleType="fitXY"
+            android:layout_marginTop="10dp"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/tvCreatedAt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_below="@+id/ivTweetImage"
+            android:gravity="left"
+            tools:text="15m ago" />
+
+        <View
+            android:id="@+id/first"
+            android:layout_width="match_parent"
+            android:layout_height=".85dp"
+            android:layout_below="@+id/tvCreatedAt"
+            android:layout_marginTop="10dp"
+            android:background="@color/light_gray" />
+
+        <LinearLayout
+            android:id="@+id/data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/first"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:layout_marginLeft="10dp">
+
+            <TextView
+                android:id="@+id/tvRetweet"
+                android:paddingLeft="3dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="12312"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:paddingLeft="3dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Retweets"/>
+
+            <TextView
+                android:id="@+id/tvLike"
+                android:paddingLeft="3dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="12312"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:paddingLeft="3dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Me gusta"/>
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/second"
+            android:layout_width="match_parent"
+            android:layout_height=".85dp"
+            android:layout_below="@+id/data"
+            android:layout_marginTop="10dp"
+            android:background="@color/light_gray" />
+
+        <com.google.android.flexbox.FlexboxLayout
+            android:id="@+id/flexbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/tvBody"
+            android:layout_alignRight="@+id/tvBody"
+            android:layout_below="@id/second"
+            android:layout_marginTop="10dp"
+            app:justifyContent="space_around"> <!-- or "space_between", "space_evenly" -->
+
+
+            <ImageButton
+                android:id="@+id/ibReply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_comment_anim"
+                tools:srcCompat="@tools:sample/avatars"/>
+
+            <ImageButton
+                android:id="@+id/ibRetweet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_retweet_anim"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <ImageButton
+                android:id="@+id/ibLike"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_like_anim"
+                tools:srcCompat="@tools:sample/avatars"/>
+
+        </com.google.android.flexbox.FlexboxLayout>
+
+        <View
+            android:id="@+id/third"
+            android:layout_width="match_parent"
+            android:layout_height=".85dp"
+            android:layout_below="@+id/flexbox"
+            android:layout_marginTop="10dp"
+            android:background="@color/light_gray" />
+
+    </RelativeLayout>
+</ScrollView>

@@ -1,6 +1,7 @@
 package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.codepath.apps.restclienttemplate.models.Tweet;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 
 import org.jetbrains.annotations.NotNull;
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -234,7 +236,14 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
 
         @Override
         public void onClick(View view) {
-            Toast.makeText(context, "Clicked on the tweet!", Toast.LENGTH_SHORT).show();
+            int position = getAdapterPosition();
+            if (position != RecyclerView.NO_POSITION)
+            {
+                Intent intent = new Intent(context, TweetDetailActivity.class);
+                Tweet tweet = tweets.get(position);
+                intent.putExtra("tweet", Parcels.wrap(tweet));
+                context.startActivity(intent);
+            }
         }
     }
 }
