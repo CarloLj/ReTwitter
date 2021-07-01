@@ -1,2 +1,2 @@
 # ReTwitter
- Build a simple Twitter client that supports viewing a Twitter timeline and composing a new tweet.
+Simple Twitter client that supports viewing a Twitter timeline and all basic user interactions with tweets.
