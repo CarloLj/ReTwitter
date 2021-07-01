@@ -130,6 +130,12 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 ibLike.setBackgroundResource(R.drawable.ic_like_anim);
             }
 
+            if (tweet.retweeted) {
+                ibRetweet.setBackgroundResource(R.drawable.ic_vector_retweet);
+            }else{
+                ibRetweet.setBackgroundResource(R.drawable.ic_retweet_anim);
+            }
+
             ibLike.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -167,7 +173,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
 
                             @Override
                             public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-                                Toast.makeText(context, "Tweet Disliked!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "Tweet could not be Disliked!", Toast.LENGTH_SHORT).show();
                                 Log.e("OnClick Like", "error");
                             }
                         });
@@ -178,7 +184,43 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             ibRetweet.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(context, "Retweet Clicked", Toast.LENGTH_SHORT).show();
+                    if(!tweet.retweeted) {
+                        client.retweet(tweet.id, new JsonHttpResponseHandler() {
+                            @Override
+                            public void onSuccess(int statusCode, Headers headers, JSON json) {
+                                ibRetweet.setBackgroundResource(R.drawable.ic_vector_retweet);
+                                int retweets = Integer.valueOf(tvRetweet.getText().toString());
+                                tvRetweet.setText(String.valueOf(retweets+1));
+                                tweet.retweetCount++;
+                                tweet.retweeted = true;
+                                Toast.makeText(context, "Retweeted successfully!", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                                Toast.makeText(context, "Could not retweet!", Toast.LENGTH_SHORT).show();
+                                Log.i("Retweet tweet", "failure" + response);
+                            }
+                        });
+                    }else{
+                        client.unRetweet(tweet.id, new JsonHttpResponseHandler() {
+                            @Override
+                            public void onSuccess(int statusCode, Headers headers, JSON json) {
+                                ibRetweet.setBackgroundResource(R.drawable.ic_vector_retweet_stroke);
+                                int retweets = Integer.valueOf(tvRetweet.getText().toString());
+                                tvRetweet.setText(String.valueOf(retweets-1));
+                                tweet.retweetCount--;
+                                tweet.retweeted = false;
+                                Toast.makeText(context, "Uneretweeted successfully!", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                                Toast.makeText(context, "Could not retweet!", Toast.LENGTH_SHORT).show();
+                                Log.i("Unretweet tweet", "failure" + response);
+                            }
+                        });
+                    }
                 }
             });
 
