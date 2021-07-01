@@ -76,4 +76,14 @@
         android:onClick="createTweet"
         android:src="@drawable/vector_compose_fab"
         android:backgroundTint="@color/twitter_blue" />
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:id="@+id/pbFooterLoading"
+        android:layout_gravity="center_horizontal"
+        android:visibility="gone" />
 </RelativeLayout>

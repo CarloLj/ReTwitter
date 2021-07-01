@@ -3,20 +3,17 @@ package com.codepath.apps.restclienttemplate;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
@@ -34,14 +31,23 @@ import okhttp3.Headers;
 public class TimelineActivity extends AppCompatActivity {
 
     private SwipeRefreshLayout swipeContainer;
-
+    public MenuItem miActionProgressItem;
     public static final String TAG  = "TimelineActivity";
     private final int REQUEST_CODE = 20;
 
+    ProgressBar pbFooterLoading;
     TwitterClient client;
     RecyclerView rvTweets;
     List<Tweet> tweets;
     TweetsAdapter adapter;
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // Store instance of the menu item containing progress
+        miActionProgressItem = menu.findItem(R.id.miActionProgress);
+        // Return to finish
+        return super.onPrepareOptionsMenu(menu);
+    }
 
     //overriding the menu bar at the top ctrl + o
     @Override
@@ -92,6 +98,7 @@ public class TimelineActivity extends AppCompatActivity {
 
         //Find the recycler view
         rvTweets = findViewById(R.id.rvTweets);
+        pbFooterLoading = findViewById(R.id.pbFooterLoading);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -127,6 +134,7 @@ public class TimelineActivity extends AppCompatActivity {
     }
 
     private void populateHomeTimeLine(){
+        showProgressBarIn();
         client.getHomeTimeline(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Headers headers, JSON json) {
@@ -139,11 +147,14 @@ public class TimelineActivity extends AppCompatActivity {
                     Log.e(TAG, "Json exception, e");
                     e.printStackTrace();
                 }
+                hideProgressBarIn();
             }
 
             @Override
             public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
                 Log.e(TAG, "OnFailure()", throwable);
+                Toast.makeText(TimelineActivity.this, "Could not fill time line", Toast.LENGTH_SHORT).show();
+                hideProgressBarIn();
             }
         });
     }
@@ -155,6 +166,7 @@ public class TimelineActivity extends AppCompatActivity {
     }
 
     public void fetchTimelineAsync(int page) {
+        showProgressBar();
         // Send the network request to fetch the updated data
         // `client` here is an instance of Android Async HTTP
         // getHomeTimeline is an example endpoint.
@@ -172,6 +184,7 @@ public class TimelineActivity extends AppCompatActivity {
                 }
                 // Now we call setRefreshing(false) to signal refresh has finished
                 swipeContainer.setRefreshing(false);
+                hideProgressBar();
             }
 
             @Override
@@ -188,4 +201,29 @@ public class TimelineActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ComposeActivity.class);
         startActivityForResult(intent, REQUEST_CODE);
     }
+
+    // visible for progress bar item in Toolbar
+    public void showProgressBar() {
+        // Show progress item
+        miActionProgressItem.setVisible(true);
+    }
+
+    // invisible for progress bar item in Toolbar
+    public void hideProgressBar() {
+        // Hide progress item
+        miActionProgressItem.setVisible(false);
+    }
+
+    // visible for centered progress bar
+    public void showProgressBarIn() {
+        // Show progress item
+        pbFooterLoading.setVisibility(View.VISIBLE);
+    }
+
+    // invisible for centered progress bar
+    public void hideProgressBarIn() {
+        // Hide progress item
+        pbFooterLoading.setVisibility(View.INVISIBLE);
+    }
+
 }
