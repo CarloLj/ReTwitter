@@ -2,16 +2,21 @@ package com.codepath.apps.restclienttemplate;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
@@ -51,9 +56,8 @@ public class TimelineActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle presses on the action bar items
         switch (item.getItemId()) {
-            case R.id.compose:
-                Intent intent = new Intent(this, ComposeActivity.class);
-                startActivityForResult(intent, REQUEST_CODE);
+            case R.id.logout:
+                onLogoutButton();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -88,6 +92,12 @@ public class TimelineActivity extends AppCompatActivity {
 
         //Find the recycler view
         rvTweets = findViewById(R.id.rvTweets);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        // Remove default title text
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        // Get access to the custom title view
 
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
         // Setup refresh listener which triggers new data loading
@@ -138,7 +148,7 @@ public class TimelineActivity extends AppCompatActivity {
         });
     }
 
-    public void onLogoutButton(View view) {
+    public void onLogoutButton() {
         client.clearAccessToken(); // forget who's logged in
         finish(); // navigate backwards to Login screen
     }
@@ -172,4 +182,8 @@ public class TimelineActivity extends AppCompatActivity {
         });
     }
 
+    public void createTweet(View view) {
+        Intent intent = new Intent(this, ComposeActivity.class);
+        startActivityForResult(intent, REQUEST_CODE);
+    }
 }

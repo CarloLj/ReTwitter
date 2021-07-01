@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.codepath.apps.restclienttemplate.models.Tweet;
@@ -87,15 +88,15 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         public void bind(Tweet tweet) {
             tvBody.setText(tweet.body);
             tvScreenName.setText("@" + tweet.user.screenName);
-            tvCreatedAt.setText(tweet.createdAt);
+            tvCreatedAt.setText("• " + tweet.createdAt);
             tvUserName.setText(tweet.user.name);
             Glide.with(context).load(tweet.user.profileImageUrl).transform(new CircleCrop()).into(ivProfileImage);
             if(tweet.mediaUrl != null){
                 ivTweetImage.setVisibility(View.VISIBLE);
             }else{
-                ivTweetImage.setVisibility(View.INVISIBLE);
+                ivTweetImage.setVisibility(View.GONE);
             }
-            Glide.with(context).load(tweet.mediaUrl).into(ivTweetImage);
+            Glide.with(context).load(tweet.mediaUrl).transforms(new CenterCrop(), new RoundedCorners(30)).into(ivTweetImage);
         }
     }
 }

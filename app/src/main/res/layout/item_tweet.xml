@@ -24,6 +24,7 @@
         android:layout_marginTop="10dp"
         android:layout_toEndOf="@+id/ivProfileimage"
         android:textStyle="bold"
+        android:textColor="@android:color/black"
         tools:text="/@carlosano2008" />
 
     <TextView
@@ -57,17 +58,20 @@
         android:layout_below="@+id/tvScreenName"
         android:layout_marginStart="5dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="10dp"
+        android:textColor="@android:color/black"
         android:layout_toEndOf="@+id/ivProfileimage"
         tools:text="THIS IS MY TWEET!" />
 
     <ImageView
         android:id="@+id/ivTweetImage"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="170dp"
         android:layout_below="@+id/tvBody"
         android:layout_alignStart="@+id/tvBody"
         android:layout_alignParentEnd="true"
-        android:scaleType="fitCenter"
+        android:layout_marginEnd="10dp"
+        android:scaleType="fitXY"
         android:layout_marginTop="8dp"
         tools:srcCompat="@tools:sample/avatars" />
 
@@ -78,7 +82,7 @@
         android:layout_alignLeft="@+id/ivTweetImage"
         android:layout_alignRight="@+id/ivTweetImage"
         android:layout_below="@id/ivTweetImage"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="10dp"
         app:justifyContent="space_around"> <!-- or "space_between", "space_evenly" -->
 
         <ImageButton
@@ -86,7 +90,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/ic_comment_anim"
-            android:backgroundTint="#00FFFF"
+            android:backgroundTint="@color/medium_gray"
             tools:srcCompat="@tools:sample/avatars"
             android:layout_gravity="left"
             />
@@ -96,7 +100,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/ic_retweet_anim"
-            android:backgroundTint="#00FFFF"
+            android:backgroundTint="@color/medium_gray"
             tools:srcCompat="@tools:sample/avatars"
             android:layout_gravity="center"/>
 
@@ -105,7 +109,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/ic_like_anim"
-            android:backgroundTint="#00FFFF"
+            android:backgroundTint="@color/medium_gray"
             tools:srcCompat="@tools:sample/avatars"
             android:layout_gravity="right"/>
     </com.google.android.flexbox.FlexboxLayout>
@@ -114,7 +118,7 @@
         android:layout_width="match_parent"
         android:layout_height=".85dp"
         android:layout_below="@+id/flexbox"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="8dp"
         android:background="@color/light_gray" />
 
 </RelativeLayout>
