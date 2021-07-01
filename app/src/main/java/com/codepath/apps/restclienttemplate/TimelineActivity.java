@@ -3,6 +3,7 @@ package com.codepath.apps.restclienttemplate;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -28,7 +29,15 @@ import java.util.List;
 
 import okhttp3.Headers;
 
-public class TimelineActivity extends AppCompatActivity {
+public class TimelineActivity extends AppCompatActivity implements ComposeModal.OnInputListener {
+
+    @Override
+    public void sendInput(Tweet tweet) {
+        tweets.add(0,tweet);
+        //Update the adapter
+        adapter.notifyItemInserted(0);
+        rvTweets.smoothScrollToPosition(0);
+    }
 
     private SwipeRefreshLayout swipeContainer;
     public MenuItem miActionProgressItem;
@@ -198,8 +207,11 @@ public class TimelineActivity extends AppCompatActivity {
 
     //start Compose Activity and wait for result
     public void createTweet(View view) {
-        Intent intent = new Intent(this, ComposeActivity.class);
-        startActivityForResult(intent, REQUEST_CODE);
+        //Uncomment to use as an activity
+        //Intent intent = new Intent(this, ComposeActivity.class);
+        //startActivityForResult(intent, REQUEST_CODE);
+        ComposeModal dialog = new ComposeModal();
+        dialog.show(getSupportFragmentManager(), "composeTweet");
     }
 
     // visible for progress bar item in Toolbar
@@ -225,5 +237,4 @@ public class TimelineActivity extends AppCompatActivity {
         // Hide progress item
         pbFooterLoading.setVisibility(View.INVISIBLE);
     }
-
 }

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -58,6 +59,9 @@ public class TweetDetailActivity extends AppCompatActivity {
                 .load(tweet.mediaUrl)
                 .transform(new RoundedCorners(20))
                 .into(media);
+        if(tweet.mediaUrl==""){
+            media.setVisibility(View.INVISIBLE);
+        }
         tvScreenName.setText(tweet.user.screenName);
         tvUserName.setText("@"+tweet.user.name);
         tvTimeStamp.setText(tweet.createdAt);

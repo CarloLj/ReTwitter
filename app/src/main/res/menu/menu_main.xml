@@ -14,5 +14,6 @@
         android:icon="@drawable/baseline_logout_24"
         android:iconTint="@android:color/white"
         android:title="Compose"
-        app:showAsAction="always" />
+        app:showAsAction="always"
+        />
 </menu>
