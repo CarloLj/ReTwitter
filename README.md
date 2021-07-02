@@ -41,6 +41,8 @@ The following **optional** features are implemented:
 The following **additional** features are implemented:
 
 * [X] User can un-retweet
+* [X] Used flexbox for aligning items
+
 
 ## Video Walkthrough
 
