@@ -152,21 +152,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/ic_comment_anim"
-                tools:srcCompat="@tools:sample/avatars"/>
+                tools:srcCompat="@tools:sample/avatars"
+                android:onClick="replyFunction"/>
 
             <ImageButton
                 android:id="@+id/ibRetweet"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/ic_retweet_anim"
-                tools:srcCompat="@tools:sample/avatars" />
+                tools:srcCompat="@tools:sample/avatars"
+                android:onClick="retweetFunction"/>
 
             <ImageButton
                 android:id="@+id/ibLike"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/ic_like_anim"
-                tools:srcCompat="@tools:sample/avatars"/>
+                tools:srcCompat="@tools:sample/avatars"
+                android:onClick="likeButton"/>
 
         </com.google.android.flexbox.FlexboxLayout>
 

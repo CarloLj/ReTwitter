@@ -6,14 +6,56 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".LoginActivity" >
+    tools:context=".LoginActivity"
+    android:background="@color/twitter_blue">
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="150dp"
+        android:text="ReTwitter"
+        android:textSize="24sp"
+        style="@android:style/TextAppearance.DeviceDefault.DialogWindowTitle"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:id="@+id/ivLogo"
+        android:layout_height="100dp"
+        android:layout_width="100dp"
+        android:layout_below="@+id/tvTitle"
+        android:background="@drawable/twitter_vector"
+        android:backgroundTint="@android:color/white"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:layout_below="@id/ivLogo"
+        android:id="@+id/tvWelcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:text="Welcome to ReTwitter"
+        android:layout_centerHorizontal="true"/>
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/tvWelcome"
+        android:id="@+id/tvSign"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
+        android:text="Click here to log in"
+        android:layout_centerHorizontal="true"/>
 
     <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_below="@id/tvSign"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
         android:layout_centerHorizontal="true"
-        android:layout_margin="20dp"
+        android:layout_margin="10dp"
         android:onClick="loginToRest"
+        android:background="@android:color/white"
         android:text="@string/login_label" />
 
 </RelativeLayout>
