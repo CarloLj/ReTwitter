@@ -2,6 +2,7 @@ package com.codepath.apps.restclienttemplate;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -28,6 +31,8 @@ import org.parceler.Parcels;
 import java.util.List;
 
 import okhttp3.Headers;
+
+import static androidx.core.content.ContextCompat.startActivity;
 
 public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder>{
 
@@ -230,6 +235,9 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                 @Override
                 public void onClick(View view) {
                     Toast.makeText(context, "Reply Clicked", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(context, com.codepath.apps.restclienttemplate.ReplyActivity.class);
+                    intent.putExtra("tweet", Parcels.wrap(tweet));
+                    startActivity(context,intent,new Bundle());
                 }
             });
         }

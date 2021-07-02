@@ -25,20 +25,25 @@ import java.util.Objects;
 
 import okhttp3.Headers;
 
-public class ComposeModal extends DialogFragment {
+public class ReplyModal extends DialogFragment {
 
-    public interface OnInputListener{
-        void sendInput(Tweet tweet);
-    }
-    public OnInputListener onInputListener;
-
-    public static final String TAG = "ComposeModal";
+    public static final String TAG = "ReplyModal";
     public static final int MAX_TWEET_LENGTH = 280;
     EditText etCompose;
     Button btnTweet;
     TwitterClient client;
 
-    public ComposeModal() { }
+    public static ReplyModal newInstance(int num) {
+        ReplyModal f = new ReplyModal();
+
+        // Supply num input as an argument.
+        Bundle args = new Bundle();
+        args.putInt("num", num);
+        f.setArguments(args);
+        return f;
+    }
+
+    public ReplyModal() { }
 
     //Changes the layout of the dialog fragment to be the max
     @Override
@@ -64,6 +69,7 @@ public class ComposeModal extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
         // Get field from view
         client = TwitterApp.getRestClient(getContext());
+
         etCompose = view.findViewById(R.id.etCompose);
         btnTweet = view.findViewById(R.id.btnTweet);
 
@@ -86,7 +92,6 @@ public class ComposeModal extends DialogFragment {
                         Log.i(TAG, "OnSuccess to publish tweet");
                         try {
                             Tweet tweet = Tweet.fromJson(json.jsonObject);
-                            onInputListener.sendInput(tweet);
                             Objects.requireNonNull(getDialog()).dismiss();
                         } catch (JSONException e) {
                             Toast.makeText(getContext(), "something failed", Toast.LENGTH_SHORT).show();
@@ -106,13 +111,4 @@ public class ComposeModal extends DialogFragment {
         });
     }
 
-    @Override
-    public void onAttach(@NonNull @NotNull Context context) {
-        super.onAttach(context);
-        try{
-            onInputListener = (OnInputListener) getActivity();
-        }catch (ClassCastException e){
-            Log.e(TAG, "onAttach: ClassCastException: " + e.getMessage());
-        }
-    }
 }

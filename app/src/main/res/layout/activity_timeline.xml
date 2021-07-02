@@ -40,14 +40,14 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/twitter_vector"
                     android:layout_gravity="center"
-                    android:backgroundTint="#ffffff" />
+                    android:backgroundTint="#ffffff"
+                    android:contentDescription="TwitterLogo"/>
 
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.AppBarLayout>
 
         <!-- Swipe refresh layout allow users to scroll to refresh the recycler view-->
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/swipeContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
