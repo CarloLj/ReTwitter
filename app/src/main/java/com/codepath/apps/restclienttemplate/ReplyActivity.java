@@ -68,7 +68,7 @@ public class ReplyActivity extends AppCompatActivity {
         tvTweetCreator.setText(receivedTweet.user.screenName);
         tvScreenName.setText(receivedTweet.user.screenName);
         Glide.with(ReplyActivity.this).
-                load(receivedTweet.mediaUrl).
+                load(receivedTweet.user.profileImageUrl).
                 transform(new CircleCrop()).
                 into(ivProfileimage);
         tvUserName.setText(receivedTweet.user.name);
