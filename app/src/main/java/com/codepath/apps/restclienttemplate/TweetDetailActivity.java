@@ -23,6 +23,8 @@ import org.parceler.Parcels;
 
 import okhttp3.Headers;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
 public class TweetDetailActivity extends AppCompatActivity {
 
     TextView tvBody;
@@ -93,9 +95,50 @@ public class TweetDetailActivity extends AppCompatActivity {
 
 
     public void replyFunction(View view) {
+        Toast.makeText(TweetDetailActivity.this, "Reply Clicked", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(TweetDetailActivity.this, com.codepath.apps.restclienttemplate.ReplyActivity.class);
+        intent.putExtra("tweet", Parcels.wrap(tweet));
+        startActivity(intent);
     }
 
     public void retweetFunction(View view) {
+        if(!tweet.retweeted) {
+            client.retweet(tweet.id, new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Headers headers, JSON json) {
+                    ibRetweet.setBackgroundResource(R.drawable.ic_vector_retweet);
+                    int retweets = Integer.valueOf(tvRetweet.getText().toString());
+                    tvRetweet.setText(String.valueOf(retweets+1));
+                    tweet.retweetCount++;
+                    tweet.retweeted = true;
+                    Toast.makeText(TweetDetailActivity.this, "Retweeted successfully!", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                    Toast.makeText(TweetDetailActivity.this, "Could not retweet!", Toast.LENGTH_SHORT).show();
+                    Log.i("Retweet tweet", "failure" + response);
+                }
+            });
+        }else{
+            client.unRetweet(tweet.id, new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Headers headers, JSON json) {
+                    ibRetweet.setBackgroundResource(R.drawable.ic_vector_retweet_stroke);
+                    int retweets = Integer.valueOf(tvRetweet.getText().toString());
+                    tvRetweet.setText(String.valueOf(retweets-1));
+                    tweet.retweetCount--;
+                    tweet.retweeted = false;
+                    Toast.makeText(TweetDetailActivity.this, "Uneretweeted successfully!", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+                    Toast.makeText(TweetDetailActivity.this, "Could not retweet!", Toast.LENGTH_SHORT).show();
+                    Log.i("Unretweet tweet", "failure" + response);
+                }
+            });
+        }
     }
 
     public void likeButton(View view) {

@@ -185,8 +185,14 @@ public class TimelineActivity extends AppCompatActivity implements ComposeModal.
 
     //Log out from existing client on click of the item inside the toolbar
     public void onLogoutButton() {
-        client.clearAccessToken(); // forget who's logged in
-        finish(); // navigate backwards to Login screen
+        // forget who's logged in
+        TwitterApp.getRestClient(this).clearAccessToken();
+
+        // navigate backwards to Login screen
+        Intent i = new Intent(this, LoginActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // this makes sure the Back button won't work
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // same as above
+        startActivity(i);
     }
 
     public void fetchTimelineAsync(int page) {
