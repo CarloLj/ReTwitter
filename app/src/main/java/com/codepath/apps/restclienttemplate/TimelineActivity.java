@@ -153,7 +153,7 @@ public class TimelineActivity extends AppCompatActivity implements ComposeModal.
             }
         };
         rvTweets.addOnScrollListener(scrollListener);
-        
+
         populateHomeTimeLine();
     }
 
@@ -221,7 +221,6 @@ public class TimelineActivity extends AppCompatActivity implements ComposeModal.
     }
 
     public void loadNextDataFromApi(int offset){
-        Toast.makeText(TimelineActivity.this, "ENTRE AQUI", Toast.LENGTH_SHORT).show();
         maxId = Long.valueOf(tweets.get(tweets.size()-1).id)-1;
         client.getNextTimeline(maxId, new JsonHttpResponseHandler(){
             @Override
