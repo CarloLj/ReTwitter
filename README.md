@@ -48,7 +48,7 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='gifs/retweet.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='gifs/retweeter.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [Kap](https://getkap.co/).
 
