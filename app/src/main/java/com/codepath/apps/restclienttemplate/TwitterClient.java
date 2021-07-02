@@ -98,4 +98,13 @@ public class TwitterClient extends OAuthBaseClient {
 		params.put("in_reply_to_status_id", id);
 		client.post(apiUrl, params, "", handler);
 	}
+
+    public void getNextTimeline(Long maxId, JsonHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("statuses/home_timeline.json");
+		RequestParams params = new RequestParams();
+		params.put("tweet_mode", "extended");
+		params.put("count", 25);
+		params.put("max_id", maxId);
+		client.get(apiUrl, params, handler);
+    }
 }

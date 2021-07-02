@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -30,6 +31,8 @@ import java.util.List;
 import okhttp3.Headers;
 
 public class TimelineActivity extends AppCompatActivity implements ComposeModal.OnInputListener {
+
+    private EndlessRecyclerViewScrollListener scrollListener;
 
     @Override
     public void sendInput(Tweet tweet) {
@@ -49,6 +52,7 @@ public class TimelineActivity extends AppCompatActivity implements ComposeModal.
     RecyclerView rvTweets;
     List<Tweet> tweets;
     TweetsAdapter adapter;
+    Long maxId;
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
@@ -136,9 +140,20 @@ public class TimelineActivity extends AppCompatActivity implements ComposeModal.
         tweets = new ArrayList<>();
         adapter = new TweetsAdapter(this,tweets, client);
         //RecyclerView setup: layout manager and adapter
-        rvTweets.setLayoutManager(new LinearLayoutManager(this));
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        rvTweets.setLayoutManager(linearLayoutManager);
         rvTweets.setAdapter(adapter);
 
+
+        scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                loadNextDataFromApi(page);
+            }
+        };
+        rvTweets.addOnScrollListener(scrollListener);
+        
         populateHomeTimeLine();
     }
 
@@ -201,6 +216,28 @@ public class TimelineActivity extends AppCompatActivity implements ComposeModal.
                 Toast.makeText(TimelineActivity.this, "Could not refresh, check your connection" , Toast.LENGTH_SHORT).show();
                 Log.d("DEBUG", "Fetch timeline error: ", throwable);
                 swipeContainer.setRefreshing(false);
+            }
+        });
+    }
+
+    public void loadNextDataFromApi(int offset){
+        Toast.makeText(TimelineActivity.this, "ENTRE AQUI", Toast.LENGTH_SHORT).show();
+        maxId = Long.valueOf(tweets.get(tweets.size()-1).id)-1;
+        client.getNextTimeline(maxId, new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Headers headers, JSON json) {
+                try{
+                    adapter.addAll(Tweet.fromJsonArray(json.jsonArray));
+                    adapter.notifyDataSetChanged();
+                    maxId = Long.valueOf(tweets.get(tweets.size()-1).id)-1;
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
+
             }
         });
     }
